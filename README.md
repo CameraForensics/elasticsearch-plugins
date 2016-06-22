@@ -61,9 +61,9 @@ AND when you call the list of plugins they’ll be there:
 
 produces something like:
 
-    name       component                     version type url
+    name        component                version type url
     Junta       hamming_distance         0.1.0   j
-    Junta       euclidean_distance         0.1.0   j
+    Junta       euclidean_distance       0.1.0   j
 
 
 # Usage Examples
