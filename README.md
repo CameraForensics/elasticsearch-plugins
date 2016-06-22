@@ -33,7 +33,19 @@ Include the following in your elasticsearch.yml config file:
 
 **Note:** If you don’t do this, they still show up on the plugins list (see later) but you’ll get errors when you try to use either of them saying that elasticsearch can’t find the plugin.
 
-## Step 2: Deployment
+## Step 2: Build
+To build the plugins simply run: `gradle build`.
+
+The results will be located in: `PLUGIN_NAME/build/libs/`
+
+For example:
+
+* `hammingdistance/build/libs/hammingdistance-0.1.0.jar`
+* `euclideandistance/build/libs/euclideandistance-0.1.0.jar`
+
+**Note:** This has been built using Gradle v2.7.
+
+## Step 3: Deployment
 Don't bother using the elasticsearch plugin script to install it
 It's just a pain the ass and all it seems to do is unpack your stuff - a bit pointless.
 
