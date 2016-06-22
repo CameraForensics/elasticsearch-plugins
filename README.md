@@ -4,7 +4,7 @@ This repository contains native scoring scripts for use with elasticsearch.
 **Disclaimer:** They have only been tested with elasticsearch v1.7.3, and even then against a very strict document set.
 
 ## Hamming Distance
-This script will calculate the hamming distance between two hashes (or strings), one hash being passed in as a parameter: `param_hash`, and the other being stored in a field also identified by a parameter: `param_field`.
+This script will calculate the hamming distance between two hex-encoded bit-strings (ie: strings made up of 1’s and 0’s and then hexidecimally encoded), one hash being passed in as a parameter: `param_hash`, and the other being stored in a field also identified by a parameter: `param_field`.
 
 It will then return your search results scored accordingly, where the smallest distance (ie: most similar strings) appear nearer the top of the results list.
 
