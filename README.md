@@ -1,3 +1,25 @@
+# Introduction
+This repository contains native scoring scripts for use with elasticsearch. 
+
+**Disclaimer:** They have only been tested with elasticsearch v1.7.3, and even then against a very strict document set.
+
+## Hamming Distance
+This script will calculate the hamming distance between two hashes (or strings), one hash being passed in as a parameter: `param_hash`, and the other being stored in a field also identified by a parameter: `param_field`.
+
+It will then return your search results scored accordingly, where the smallest distance (ie: most similar strings) appear nearer the top of the results list.
+
+### Caveats
+The hashes must be the same length in every document, or the relative scoring won’t be accurate.
+
+## Euclidean Distance
+This script compares the euclidean distance of two hexadecimal-encoded hashes by first decoding them into strings of integers, and then calculating the distance between them by comparing each integer in the string.
+
+The result is subtracted from Double.MAX_VALUE to create a descending scoring value. So documents with less of a euclidean distance from the parameter hash shoudl appear nearer the top of the results list.
+
+The first hash is sent in as a parameter: `param_hash`, the other is expected to be stored in a field also identified by a parameter: `param_field`.
+
+**See Usage Examples below for clarity.**
+
 # Setup
 **Note:** If you only want to use one of the plugins, modify the following to exclude instructions for the other.
 
@@ -32,7 +54,9 @@ produces something like:
     Junta       euclidean_distance         0.1.0   j
 
 
-# Hamming Distance Usage Example
+# Usage Examples
+
+### Hamming Distance
 
     curl -XPOST 'http://localhost:9200/twitter/_search?pretty' -d '{
       "query": {
@@ -58,7 +82,7 @@ produces something like:
     }'
     
     
-# Euclidean Distance Usage Example
+### Euclidean Distance
 
     curl -XPOST 'http://localhost:9200/twitter/_search?pretty' -d '{
       "query": {
