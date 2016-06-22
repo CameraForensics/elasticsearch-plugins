@@ -1,0 +1,14 @@
+group 'com.cameraforensics'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+jar {
+    baseName = 'elasticsearch-plugins-euclideandistance'
+    version =  '0.1.0'
+}
+
+dependencies {
+    compile 'org.elasticsearch:elasticsearch:1.7.3'
+}
