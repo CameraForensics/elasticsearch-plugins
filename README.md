@@ -46,8 +46,7 @@ For example:
 **Note:** This has been built using Gradle v2.7.
 
 ## Step 3: Deployment
-Don't bother using the elasticsearch plugin script to install it
-It's just a pain the ass and all it seems to do is unpack your stuff - a bit pointless.
+Don't bother using the elasticsearch plugin script to install it - it's just a pain the ass and all it seems to do is unpack your stuff - a bit pointless.
 
 Instead put the .jar file in `%ELASTICSEARCH_HOME%/plugins/hamming_distance` for hamming distance, and `%ELASTICSEARCH_HOME%/plugins/euclidean_distance` for euclidean distance, then restart elasticsearch.
 
