@@ -1,3 +1,7 @@
+#ElasticSearch Native Script Plugins
+
+[![Build Status](https://travis-ci.org/CameraForensics/elasticsearch-plugins.svg?branch=master)](https://travis-ci.org/CameraForensics/elasticsearch-plugins)
+
 # Introduction
 This repository contains native scoring scripts for use with elasticsearch. 
 
