@@ -1,14 +1,14 @@
 group 'com.cameraforensics'
-version '0.1.0'
+version '2.3.1.0'
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
 jar {
     baseName = 'hammingdistance'
-    version =  '0.1.0'
+    version =  '2.3.1.0'
 }
 
 dependencies {
-    compile 'org.elasticsearch:elasticsearch:1.7.3'
+    compile 'org.elasticsearch:elasticsearch:2.3.1'
 }

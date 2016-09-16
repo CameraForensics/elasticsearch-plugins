@@ -11,4 +11,9 @@ public class EuclideanDistanceScriptFactory implements NativeScriptFactory {
     public ExecutableScript newScript(@Nullable Map<String, Object> params) {
         return new EuclideanDistanceScript(params);
     }
+
+    @Override
+    public boolean needsScores() {
+        return false;
+    }
 }

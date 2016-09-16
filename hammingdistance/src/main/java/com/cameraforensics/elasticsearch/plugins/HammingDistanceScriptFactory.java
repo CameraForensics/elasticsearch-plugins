@@ -11,4 +11,9 @@ public class HammingDistanceScriptFactory implements NativeScriptFactory {
     public ExecutableScript newScript(@Nullable Map<String, Object> params) {
         return new HammingDistanceScript(params);
     }
+
+    @Override
+    public boolean needsScores() {
+        return false;
+    }
 }
