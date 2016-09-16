@@ -5,12 +5,14 @@
 # Introduction
 This repository contains native scoring scripts for use with elasticsearch. 
 
-**Disclaimer:** They have only been tested with elasticsearch v1.7.3, and even then against a very strict document set.
+**Disclaimer:** They have only been tested with elasticsearch v2.3.1, and even then against a very strict document set.
 
 ## Hamming Distance
 This script will calculate the hamming distance between two hex-encoded bit-strings (ie: strings made up of 1’s and 0’s and then hexidecimally encoded), one hash being passed in as a parameter: `param_hash`, and the other being stored in a field also identified by a parameter: `param_field`.
 
 It will then return your search results scored accordingly, where the smallest distance (ie: most similar strings) appear nearer the top of the results list.
+
+**Note:** If the parameter hash and the document hash are not the same length, the result will be a score of `0.0f`.
 
 ### Caveats
 The hashes must be the same length in every document, or the relative scoring won’t be accurate.
@@ -32,8 +34,8 @@ The first hash is sent in as a parameter: `param_hash`, the other is expected to
 Include the following in your elasticsearch.yml config file:
 
     script.native:
-        hamming_distance.type: com.example.elasticsearch.plugins.HammingDistanceScriptFactory
-        euclidean_distance.type: com.example.elasticsearch.plugins.EuclideanDistanceScriptFactory
+        hamming_distance.type: com.cameraforensics.elasticsearch.plugins.HammingDistanceScriptFactory
+        euclidean_distance.type: com.cameraforensics.elasticsearch.plugins.EuclideanDistanceScriptFactory
 
 **Note:** If you don’t do this, they still show up on the plugins list (see later) but you’ll get errors when you try to use either of them saying that elasticsearch can’t find the plugin.
 
@@ -44,8 +46,8 @@ The results will be located in: `PLUGIN_NAME/build/libs/`
 
 For example:
 
-* `hammingdistance/build/libs/hammingdistance-0.1.0.jar`
-* `euclideandistance/build/libs/euclideandistance-0.1.0.jar`
+* `hammingdistance/build/libs/hammingdistance-2.3.1.0.jar`
+* `euclideandistance/build/libs/euclideandistance-2.3.1.0.jar`
 
 **Note:** This has been built using Gradle v2.7.
 
@@ -53,6 +55,8 @@ For example:
 Don't bother using the elasticsearch plugin script to install it - it's just a pain the ass and all it seems to do is unpack your stuff - a bit pointless.
 
 Instead put the .jar file in `%ELASTICSEARCH_HOME%/plugins/hamming_distance` for hamming distance, and `%ELASTICSEARCH_HOME%/plugins/euclidean_distance` for euclidean distance, then restart elasticsearch.
+
+**Note:** If you installed elasticsearch according to docs, this `%ELASTICSEARCH_HOME%` will default to `/usr/share/elasticsearch/`
 
 If all has gone well, you'll see them being loaded on elasticsearch startup:
 
@@ -64,9 +68,9 @@ AND when you call the list of plugins they’ll be there:
 
 produces something like:
 
-    name        component                version type url
-    Junta       hamming_distance         0.1.0   j
-    Junta       euclidean_distance       0.1.0   j
+    name        component                version   type url
+    Junta       hamming_distance         2.3.1.0   j
+    Junta       euclidean_distance       2.3.1.0   j
 
 
 # Usage Examples

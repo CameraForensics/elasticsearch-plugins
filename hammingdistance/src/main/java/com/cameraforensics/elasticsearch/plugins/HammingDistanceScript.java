@@ -16,13 +16,13 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         field = (String) params.get("param_field");
         hash = (String) params.get("param_hash");
         if (hash != null) {
-            length = hash.length() * 8;
+            length = hash.length();
         }
     }
 
     private int hammingDistance(CharSequence lhs, CharSequence rhs) {
         int distance = length;
-        for (int i = 0; i < lhs.length(); i++) {
+        for (int i = 0, l = lhs.length(); i < l; i++) {
             if (lhs.charAt(i) != rhs.charAt(i)) {
                 distance--;
             }
