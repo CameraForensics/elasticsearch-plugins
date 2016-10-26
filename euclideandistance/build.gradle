@@ -1,14 +1,18 @@
 group 'com.cameraforensics'
-version '2.3.1.0'
+version '2.3.1.1'
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
 jar {
     baseName = 'euclideandistance'
-    version =  '2.3.1.0'
+    version =  '2.3.1.1'
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 dependencies {
     compile 'org.elasticsearch:elasticsearch:2.3.1'
+    compile "commons-codec:commons-codec:1.10"
 }

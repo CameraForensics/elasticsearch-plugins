@@ -5,7 +5,7 @@ import org.elasticsearch.script.ScriptModule;
 
 public class HammingDistancePlugin extends Plugin {
 
-    private final String PLUGIN_NAME = "hamming_distance";
+    private static final String PLUGIN_NAME = "hamming_distance";
 
     @Override
     public String name() {

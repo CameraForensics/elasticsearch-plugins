@@ -2,7 +2,6 @@ group 'com.cameraforensics'
 version '2.3.1.0'
 
 apply plugin: 'java'
-apply plugin: 'java'
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 
@@ -52,5 +51,11 @@ subprojects {
     dependencies {
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
+    }
+
+    task prepare(type: Zip) {
+        from {
+            [new File("build/libs/${baseName}-${version}.jar"), new File("src/resources/plugin-descriptor.properties")]
+        }
     }
 }
