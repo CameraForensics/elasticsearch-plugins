@@ -53,9 +53,9 @@ subprojects {
         testCompile 'org.mockito:mockito-all:1.9.5'
     }
 
-    task prepare(type: Zip) {
+    task prepare(type: Zip, dependsOn:build) {
         from {
-            [new File("build/libs/${baseName}-${version}.jar"), new File("src/resources/plugin-descriptor.properties")]
+            [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
         }
     }
 }
