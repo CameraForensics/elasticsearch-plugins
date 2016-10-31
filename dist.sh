@@ -65,6 +65,12 @@ case "$1" in
         upload "hammingdistance"
         install "hammingdistance" 
         ;;
+    uploadall)
+        build
+        get_dns_names
+        upload "euclideandistance"
+        upload "hammingdistance" 
+        ;;
     *)
         echo $"
 
