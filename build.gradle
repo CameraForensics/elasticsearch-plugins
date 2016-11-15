@@ -1,5 +1,5 @@
 group 'com.cameraforensics'
-version '2.3.4.0'
+version '2.4.1.0'
 
 apply plugin: 'java'
 
