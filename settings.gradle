@@ -1,4 +1,5 @@
 rootProject.name = 'elasticsearch-plugins'
 include 'hammingdistance'
 include 'euclideandistance'
+include 'autocolourcorrelogram'
 

@@ -24,6 +24,19 @@ The result is subtracted from Double.MAX_VALUE to create a descending scoring va
 
 The first hash is sent in as a parameter: `param_hash`, the other is expected to be stored in a field also identified by a parameter: `param_field`.
 
+## AutoColourCorrelogram
+This script will calculate a distance between a given 64x4 correlogram (4 distance sets) in the format:
+```
+X0Y0,X0Y1,X0Y2,X0Y4;X1Y0,X1Y1,X1Y2,X1Y3;...;X64Y0,X64Y1,X64Y2,X64Y3
+```
+Because in distance terms, the smaller the distance the more likely the match, an in elastic terms, the greater the score the more likely
+the match, we need to turn the score on its head. So the result returned is actually `Integer.MAX_VALUE - distance`.
+
+If the parameter is incorrect, or the document does not have all the expected fields for the correlogram, the result will be `Integer.MAX_VALUE`.
+
+The script expects that the correlogram is stored in a field called `correlogram` in the same format as the parameter is provided (see above).
+
+
 **See Usage Examples below for clarity.**
 
 # Setup
@@ -34,7 +47,7 @@ The first hash is sent in as a parameter: `param_hash`, the other is expected to
 Include the following in your elasticsearch.yml config file:
 
     script.native:
-        hamming_distance.type: com.cameraforensics.elasticsearch.plugins.HammingDistanceScriptFactory
+        hamming_distance.type: com.cameraforensics.elasticsearch.plugins.AutoColourCorrelogramDistanceScriptFactory
         euclidean_distance.type: com.cameraforensics.elasticsearch.plugins.EuclideanDistanceScriptFactory
 
 **Note:** If you don’t do this, they still show up on the plugins list (see later) but you’ll get errors when you try to use either of them saying that elasticsearch can’t find the plugin.
@@ -118,6 +131,30 @@ produces something like:
                 "params": {
                   "param_hash": "HASH TO COMPARE WITH",
                   "param_field":"FIELD WHERE HASH IS STORED"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }'
+    
+### Auto Colour Correlogram
+
+    curl -XPOST 'http://localhost:9200/twitter/_search?pretty' -d '{
+      "query": {
+        "function_score": {     
+          "min_score": IDEAL MIN SCORE HERE,
+          "query":{
+           "match_all":{}
+          },
+          "functions": [
+            {
+              "script_score": {
+                "script": "autocolourcorrelogram",
+                "lang" : "native",
+                "params": {
+                  "param_acc": "CORRELOGRAM TO COMPARE WITH"
                 }
               }
             }
