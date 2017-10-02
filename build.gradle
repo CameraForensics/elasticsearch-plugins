@@ -11,7 +11,7 @@ subprojects {
 
     repositories {
         mavenLocal()
-        maven { url "${nexusUrl}/content/groups/public/"}
+        maven { url "${artifactoryUrl}/libs-release"}
         mavenCentral()
     }
 
@@ -31,21 +31,6 @@ subprojects {
     artifacts {
         archives sourcesJar
         archives javadocJar
-    }
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                repository(
-                        url: "${nexusUrl}/content/repositories/releases") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-                snapshotRepository(
-                        url: "${nexusUrl}/content/repositories/snapshots") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-            }
-        }
     }
 
     dependencies {
