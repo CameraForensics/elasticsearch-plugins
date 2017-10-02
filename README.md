@@ -36,6 +36,35 @@ If the parameter is incorrect, or the document does not have all the expected fi
 
 The script expects that the correlogram is stored in a field called `correlogram` in the same format as the parameter is provided (see above).
 
+## URL Tokenizer
+This script splits a URL into a set of perumtations of URL segmentation. For example, given the URL: `https://farm1.domain.com/one/two/three/four.jpg?param1=value1&param2=value2`,
+ the following tokens are created:
+ 
+* `farm1.domain.com`
+* `one`
+* `two`
+* `three`
+* `four.jpg`
+* `param1=value1&param2=value2`
+* `param1=value1`
+* `param2=value2`
+* `https://farm1.domain.com/one`
+* `https://farm1.domain.com/one/two`
+* `https://farm1.domain.com/one/two/three`
+* `https://farm1.domain.com/one/two/three/four.jpg`
+* `farm1.domain.com/one`
+* `farm1.domain.com/one/two`
+* `farm1.domain.com/one/two/three`
+* `farm1.domain.com/one/two/three/four.jpg`
+* `one/two/three/four.jpg`
+* `two/three/four.jpg`
+* `three/four.jpg`
+* `one/two/three`
+* `one/two`
+* `two/three`
+ 
+The main purpose of this plugin is to cater for URL path/sub-path querying without the need of wildcards. Performance testing showed that it generated
+more accurate results than the standard tokenizer, although it does take up more database.
 
 **See Usage Examples below for clarity.**
 
@@ -73,7 +102,7 @@ Instead put the .jar file in `%ELASTICSEARCH_HOME%/plugins/hamming_distance` for
 
 If all has gone well, you'll see them being loaded on elasticsearch startup:
 
-    [1982-07-06 12:02:43,765][INFO ][plugins                  ] [Junta] loaded [marvel, hamming_distance, euclidean_distance], sites [marvel]
+    [1982-07-06 12:02:43,765][INFO ][plugins                  ] [Junta] loaded [marvel, hamming_distance, euclidean_distance, urltokenizer], sites [marvel]
 
 AND when you call the list of plugins they’ll be there:
 
@@ -84,6 +113,7 @@ produces something like:
     name        component                version   type url
     Junta       hamming_distance         2.3.1.0   j
     Junta       euclidean_distance       2.3.1.0   j
+    Junta       urltokenizer             2.3.1.0   j
 
 
 # Usage Examples
@@ -162,3 +192,26 @@ produces something like:
         }
       }
     }'
+    
+### URL Tokenizer
+In your index mappings/settings file:
+```
+    ...
+    "settings": {
+        "index.requests.cache.enable": true,
+        "analysis":{
+            "analyzer":{
+                "urlanalyzer":{ 
+                    "type": "custom",
+                    "tokenizer": "urltokenizer"
+                }
+            }
+        }
+    },
+    ...
+    "url": {
+        "type": "string",
+        "analyzer": "urlanalyzer"
+    },
+    ...
+```

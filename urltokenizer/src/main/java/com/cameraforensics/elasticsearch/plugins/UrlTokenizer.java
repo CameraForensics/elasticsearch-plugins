@@ -61,7 +61,7 @@ public class UrlTokenizer extends Tokenizer {
 
             String path = realUrl.getPath();
             if (path != null && !"".equals(path.trim())) {
-                parts.add(realUrl.getPath());
+                parts.add(realUrl.getPath().substring(1));
                 String[] pathSegments = realUrl.getPath().substring(1).split("/");
 
                 int idx = url.indexOf(realUrl.getHost() + "/") + (realUrl.getHost() + "/").length();
