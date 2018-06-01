@@ -140,16 +140,6 @@ public class UrlTokenizer extends Tokenizer {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            super.close();
-        } finally {
-//            tokens.clear();
-//            position = 0;
-        }
-    }
-
-    @Override
     public void reset() throws IOException {
         super.reset();
         fillBuffer(input);

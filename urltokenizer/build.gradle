@@ -1,36 +1,11 @@
-group 'com.cameraforensics'
-version '2.3.4.0'
-
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
-
-configurations {
-    provided
-}
-
-apply plugin: 'idea'
-
-idea {
-    module {
-        scopes.PROVIDED.plus += [configurations.provided]
-    }
-}
-
-sourceSets {
-    main.compileClasspath += configurations.provided
-    test.compileClasspath += configurations.provided
-    test.runtimeClasspath += configurations.provided
-}
-
 jar {
     baseName = 'urltokenizer'
-    version =  '2.3.4.0'
+    version =  '6.2.4.0'
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
 dependencies {
-    provided 'org.elasticsearch:elasticsearch:2.3.4'
     compile "commons-codec:commons-codec:1.10"
 }

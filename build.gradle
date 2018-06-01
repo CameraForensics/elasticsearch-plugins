@@ -1,13 +1,18 @@
 group 'com.cameraforensics'
-version '2.4.1.0'
+version '6.2.4.0'
 
 apply plugin: 'java'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-
 subprojects {
+    group 'com.cameraforensics'
+    version '6.2.4.0'
+
     apply plugin: 'maven'
     apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
         mavenLocal()
@@ -15,6 +20,21 @@ subprojects {
         mavenCentral()
     }
 
+    configurations {
+        provided
+    }
+
+    idea {
+        module {
+            scopes.PROVIDED.plus += [configurations.provided]
+        }
+    }
+
+    sourceSets {
+        main.compileClasspath += configurations.provided
+        test.compileClasspath += configurations.provided
+        test.runtimeClasspath += configurations.provided
+    }
 
 // custom tasks for creating source/javadoc jars
     task sourcesJar(type: Jar, dependsOn:classes) {
@@ -34,6 +54,7 @@ subprojects {
     }
 
     dependencies {
+        provided 'org.elasticsearch:elasticsearch:6.2.4'
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
     }
