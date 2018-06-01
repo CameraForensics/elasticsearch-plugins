@@ -1,5 +1,5 @@
 group 'com.cameraforensics'
-version '2.4.1.0'
+version '2.3.4.0'
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
@@ -24,13 +24,13 @@ sourceSets {
 
 jar {
     baseName = 'urltokenizer'
-    version =  '2.4.1.0'
+    version =  '2.3.4.0'
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
 dependencies {
-    provided 'org.elasticsearch:elasticsearch:2.4.1'
+    provided 'org.elasticsearch:elasticsearch:2.3.4'
     compile "commons-codec:commons-codec:1.10"
 }

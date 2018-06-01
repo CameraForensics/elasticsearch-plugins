@@ -45,6 +45,10 @@ public class UrlTokenizer extends Tokenizer {
     }
 
     protected List<String> splitUrl(String url) {
+        return splitUrl(url, true);
+    }
+
+    protected List<String> splitUrl(String url, boolean includeParams) {
         Set<String> parts = new HashSet<>();
         URL realUrl;
         try {
@@ -52,11 +56,13 @@ public class UrlTokenizer extends Tokenizer {
             String host = realUrl.getHost();
             parts.add(host);
 
-            String query = realUrl.getQuery();
-            if (query != null && !"".equals(query.trim())) {
-                parts.addAll(Arrays.asList(realUrl.getQuery().split("&")));
-                parts.add(realUrl.getQuery());
-                parts.add(url.substring(0, url.length() - (query.length() + 1)));
+            if (includeParams) {
+                String query = realUrl.getQuery();
+                if (query != null && !"".equals(query.trim())) {
+                    parts.addAll(Arrays.asList(realUrl.getQuery().split("&")));
+                    parts.add(realUrl.getQuery());
+                    parts.add(url.substring(0, url.length() - (query.length() + 1)));
+                }
             }
 
             String path = realUrl.getPath();
@@ -88,11 +94,11 @@ public class UrlTokenizer extends Tokenizer {
                     path = url.substring(0, url.indexOf('?'));
                 }
                 if (!url.endsWith("?")) {
-                    String queryString = url.substring(url.indexOf('?') + 1);
-                    parts.addAll(Arrays.asList(queryString.split("&")));
-
+                    if (includeParams) {
+                        String queryString = url.substring(url.indexOf('?') + 1);
+                        parts.addAll(Arrays.asList(queryString.split("&")));
+                    }
                 }
-
             } else {
                 path = url;
             }
@@ -159,7 +165,7 @@ public class UrlTokenizer extends Tokenizer {
             str.append(buffer, 0, len);
         }
         stringToTokenize = str.toString();
-        tokens = splitUrl(stringToTokenize);
+        tokens = splitUrl(stringToTokenize, false);
     }
 
 }

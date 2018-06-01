@@ -93,6 +93,37 @@ public class UrlTokenizerTest {
     }
 
     @Test
+    public void correctly_splits_long_url_and_excludes_params() throws MalformedURLException {
+        // given
+        String url = "https://farm1.domain.com/one/two/three/four.jpg?param1=value1&param2=value2";
+
+        // when
+        List<String> splits = urlTokenizer.splitUrl(url, false);
+
+        // then
+        assertTrue(splits.contains("farm1.domain.com"));
+        assertTrue(splits.contains("one"));
+        assertTrue(splits.contains("two"));
+        assertTrue(splits.contains("three"));
+        assertTrue(splits.contains("four.jpg"));
+        assertTrue(splits.contains("https://farm1.domain.com/one"));
+        assertTrue(splits.contains("https://farm1.domain.com/one/two"));
+        assertTrue(splits.contains("https://farm1.domain.com/one/two/three"));
+        assertTrue(splits.contains("https://farm1.domain.com/one/two/three/four.jpg"));
+        assertTrue(splits.contains("farm1.domain.com/one"));
+        assertTrue(splits.contains("farm1.domain.com/one/two"));
+        assertTrue(splits.contains("farm1.domain.com/one/two/three"));
+        assertTrue(splits.contains("farm1.domain.com/one/two/three/four.jpg"));
+        assertTrue(splits.contains("one/two/three/four.jpg"));
+        assertTrue(splits.contains("two/three/four.jpg"));
+        assertTrue(splits.contains("three/four.jpg"));
+        assertTrue(splits.contains("one/two/three"));
+        assertTrue(splits.contains("one/two"));
+        assertTrue(splits.contains("two/three"));
+        assertEquals(19, splits.size());
+    }
+
+    @Test
     public void correctly_splits_slightly_shorter_url_with_params() throws MalformedURLException {
         // given
         String url = "https://farm1.domain.com/one/two/four.jpg?param1=value1&param2=value2";
