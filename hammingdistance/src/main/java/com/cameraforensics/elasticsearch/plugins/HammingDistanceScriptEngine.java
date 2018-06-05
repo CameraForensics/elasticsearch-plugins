@@ -1,52 +1,58 @@
 package com.cameraforensics.elasticsearch.plugins;
 
 import org.apache.lucene.index.LeafReaderContext;
-import org.elasticsearch.index.fielddata.ScriptDocValues;
-import org.elasticsearch.script.ScriptContext;
-import org.elasticsearch.script.ScriptEngine;
-import org.elasticsearch.script.SearchScript;
+import org.elasticsearch.common.inject.internal.Nullable;
+import org.elasticsearch.script.*;
+import org.elasticsearch.search.lookup.SearchLookup;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
 
-public class HammingDistanceScriptEngine implements ScriptEngine {
+public class HammingDistanceScriptEngine implements ScriptEngineService {
+
     @Override
     public String getType() {
         return "expert_scripts";
     }
 
     @Override
-    public <T> T compile(String scriptName, String scriptSource, ScriptContext<T> context, Map<String, String> params) {
-        if (context.equals(SearchScript.CONTEXT) == false) {
-            throw new IllegalArgumentException(getType() + " scripts cannot be used for context [" + context.name + "]");
-        }
+    public Function<Map<String, Object>, SearchScript> compile(String scriptName, String scriptSource, Map<String, String> params) {
         // we use the script "source" as the script identifier
         if ("hamming_distance".equals(scriptSource)) {
-            SearchScript.Factory factory = (p, lookup) -> new SearchScript.LeafFactory() {
+            return p -> new SearchScript() {
                 final String field;
                 final String hash;
-                final int length;
+                private int length;
 
                 {
-                    if (p.containsKey("field") == false) {
+                    if (!p.containsKey("field")) {
                         throw new IllegalArgumentException("Missing parameter [field]");
                     }
-                    if (p.containsKey("hash") == false) {
+                    if (!p.containsKey("hash")) {
                         throw new IllegalArgumentException("Missing parameter [hash]");
                     }
                     field = p.get("field").toString();
                     hash = p.get("hash").toString();
                     if (hash != null) {
                         length = hash.length();
-                    }
-                    else {
+                    } else {
                         length = 0;
                     }
+
                 }
 
                 @Override
-                public SearchScript newInstance(LeafReaderContext context) throws IOException {
-                    return new SearchScript(p, lookup, context) {
+                public LeafSearchScript getLeafSearchScript(LeafReaderContext context) throws IOException {
+                    return new LeafSearchScript() {
+                        int currentDocId = -1;
+
+                        @Override
+                        public void setDocument(int docid) {
+                            // advance has undefined behavior calling with a docid <= its current docid
+                            currentDocId = docid;
+                        }
+
                         private int hammingDistance(CharSequence lhs, CharSequence rhs) {
                             int distance = length;
                             for (int i = 0, l = lhs.length(); i < l; i++) {
@@ -60,27 +66,50 @@ public class HammingDistanceScriptEngine implements ScriptEngine {
 
                         @Override
                         public double runAsDouble() {
-                            String fieldValue = ((ScriptDocValues.Strings) getDoc().get(field)).getValue();
+                            String fieldValue = null;
+                            try {
+                                fieldValue = context.reader().document(currentDocId).get(field);
+                            } catch (IOException e) {
+
+                            }
+
                             if (hash == null || fieldValue == null || fieldValue.length() != hash.length()) {
                                 return 0.0f;
                             }
 
                             return hammingDistance(fieldValue, hash);
-                        }                    };
+                        }
+                    };
+
                 }
 
                 @Override
-                public boolean needs_score() {
+                public boolean needsScores() {
                     return false;
                 }
             };
-            return context.factoryClazz.cast(factory);
         }
         throw new IllegalArgumentException("Unknown script name " + scriptSource);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public SearchScript search(CompiledScript compiledScript, SearchLookup lookup, @Nullable Map<String, Object> params) {
+        Function<Map<String, Object>, SearchScript> scriptFactory = (Function<Map<String, Object>, SearchScript>) compiledScript.compiled();
+        return scriptFactory.apply(params);
+    }
+
+    @Override
+    public ExecutableScript executable(CompiledScript compiledScript, @Nullable Map<String, Object> params) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isInlineScriptEnabled() {
+        return true;
+    }
+
+    @Override
     public void close() {
-        // optionally close resources
     }
 }

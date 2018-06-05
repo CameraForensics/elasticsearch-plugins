@@ -1,5 +1,5 @@
 def baseName = 'urltokenizer'
-def version =  '6.2.4.0'
+def version =  '5.5.0.0'
 
 
 jar {
