@@ -1,22 +1,21 @@
 package com.cameraforensics.elasticsearch.plugins;
 
-import org.elasticsearch.index.analysis.AnalysisModule;
+import org.elasticsearch.index.analysis.TokenizerFactory;
+import org.elasticsearch.indices.analysis.AnalysisModule;
+import org.elasticsearch.plugins.AnalysisPlugin;
 import org.elasticsearch.plugins.Plugin;
 
-public class UrlTokenizerPlugin extends Plugin {
+import java.util.HashMap;
+import java.util.Map;
 
+public class UrlTokenizerPlugin extends Plugin implements AnalysisPlugin {
 
-    public void onModule(AnalysisModule module) {
-        module.addTokenizer("urltokenizer", UrlTokenizerFactory.class);
-    }
 
     @Override
-    public String name() {
-        return "urltokenizer";
+    public Map<String, AnalysisModule.AnalysisProvider<TokenizerFactory>> getTokenizers() {
+        Map<String, AnalysisModule.AnalysisProvider<TokenizerFactory>> extra = new HashMap<>();
+        extra.put("urltokenizer", UrlTokenizerFactory::new);
+        return extra;
     }
 
-    @Override
-    public String description() {
-        return "A custom tokenizer to produce tokens for all permutations of URL path segmentation.";
-    }
 }

@@ -1,14 +1,25 @@
-group 'com.cameraforensics'
-version '2.4.1.0'
-
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+def baseName = 'hammingdistance'
+def version =  '6.2.4.0'
 
 jar {
-    baseName = 'hammingdistance'
-    version =  '2.4.1.0'
+    baseName = "${baseName}"
+    version =  "${version}"
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
-dependencies {
-    compile 'org.elasticsearch:elasticsearch:2.4.1'
+task prePrepare(type: Copy, dependsOn:build) {
+    from {
+        [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
+    }
+    into "${buildDir}/elasticsearch"
+}
+
+
+task prepare(type: Zip, dependsOn:prePrepare) {
+    from "${buildDir}/elasticsearch"
+//        new File(""){
+//            [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
+//        }
 }
