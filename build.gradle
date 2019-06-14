@@ -1,11 +1,11 @@
 group 'com.cameraforensics'
-version '6.2.4.0'
+version '7.1.1.0'
 
 apply plugin: 'java'
 
 subprojects {
     group 'com.cameraforensics'
-    version '6.2.4.0'
+    version '7.1.1.0'
 
     apply plugin: 'maven'
     apply plugin: 'java'
@@ -54,7 +54,7 @@ subprojects {
     }
 
     dependencies {
-        provided 'org.elasticsearch:elasticsearch:6.2.4'
+        provided 'org.elasticsearch:elasticsearch:7.1.1'
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
     }

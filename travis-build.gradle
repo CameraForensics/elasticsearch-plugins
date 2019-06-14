@@ -1,7 +1,7 @@
 group 'com.cameraforensics'
-version '2.4.1'
+version '7.1.1'
 
 apply plugin: 'java'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
 
