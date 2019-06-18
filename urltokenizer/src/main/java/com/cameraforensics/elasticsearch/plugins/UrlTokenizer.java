@@ -2,9 +2,6 @@ package com.cameraforensics.elasticsearch.plugins;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttributeImpl;
-import org.apache.lucene.util.AttributeFactory;
 
 import java.io.IOException;
 import java.io.Reader;

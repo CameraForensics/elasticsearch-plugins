@@ -20,22 +20,6 @@ subprojects {
         mavenCentral()
     }
 
-    configurations {
-        provided
-    }
-
-    idea {
-        module {
-            scopes.PROVIDED.plus += [configurations.provided]
-        }
-    }
-
-    sourceSets {
-        main.compileClasspath += configurations.provided
-        test.compileClasspath += configurations.provided
-        test.runtimeClasspath += configurations.provided
-    }
-
 // custom tasks for creating source/javadoc jars
     task sourcesJar(type: Jar, dependsOn:classes) {
         classifier = 'sources'
@@ -54,7 +38,8 @@ subprojects {
     }
 
     dependencies {
-        provided 'org.elasticsearch:elasticsearch:7.1.1'
+        compileOnly 'org.elasticsearch:elasticsearch:7.1.1'
+        testCompile 'org.elasticsearch:elasticsearch:7.1.1'
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
     }
