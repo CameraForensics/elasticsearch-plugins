@@ -13,7 +13,7 @@ task prePrepare(type: Copy, dependsOn:build) {
     from {
         [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
     }
-    into "${buildDir}/elasticsearch"
+    into "${buildDir}"
 }
 
 
