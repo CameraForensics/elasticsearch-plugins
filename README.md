@@ -5,7 +5,7 @@
 # Introduction
 This repository contains native scoring scripts for use with elasticsearch. 
 
-**Disclaimer:** They have only been tested with elasticsearch v2.3.1, and even then against a very strict document set.
+**Disclaimer:** They have only been tested with elasticsearch versions 2.3.1 and 6.2.4, and even then against a very strict document set.
 
 ## Hamming Distance
 This script will calculate the hamming distance between two hex-encoded bit-strings (ie: strings made up of 1’s and 0’s and then hexidecimally encoded), one hash being passed in as a parameter: `param_hash`, and the other being stored in a field also identified by a parameter: `param_field`.
