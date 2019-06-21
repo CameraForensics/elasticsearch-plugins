@@ -82,7 +82,7 @@ Include the following in your elasticsearch.yml config file:
 **Note:** If you don’t do this, they still show up on the plugins list (see later) but you’ll get errors when you try to use either of them saying that elasticsearch can’t find the plugin.
 
 ## Step 2: Build
-To build the plugins simply run: `gradle build`.
+To build the plugins simply run: `./gradlew preprare`.
 
 The results will be located in: `PLUGIN_NAME/build/libs/`
 

@@ -43,27 +43,4 @@ subprojects {
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
     }
-
-
-//    task prePrepare(type: Copy, dependsOn:build) {
-//        from {
-//            [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
-//        }
-//        into "${buildDir}/elasticsearch"
-//    }
-//
-//
-//    task prepare(type: Zip, dependsOn:prePrepare) {
-//        from "${buildDir}/elasticsearch"
-//    //        new File(""){
-//    //            [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
-//    //        }
-//    }
-
-//
-//    task prepare(type: Zip, dependsOn:build) {
-//        from {
-//            [new File("build/libs/${baseName}-${version}.jar"), new File("build/resources/main/plugin-descriptor.properties")]
-//        }
-//    }
 }
