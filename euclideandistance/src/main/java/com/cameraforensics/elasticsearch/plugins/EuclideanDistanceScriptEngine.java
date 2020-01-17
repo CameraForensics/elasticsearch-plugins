@@ -1,14 +1,13 @@
 package com.cameraforensics.elasticsearch.plugins;
 
+import java.util.Map;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.lucene.index.LeafReaderContext;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
+import org.elasticsearch.script.ScoreScript;
 import org.elasticsearch.script.ScriptContext;
 import org.elasticsearch.script.ScriptEngine;
-import org.elasticsearch.script.ScoreScript;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class EuclideanDistanceScriptEngine implements ScriptEngine {
     @Override
@@ -56,7 +55,7 @@ public class EuclideanDistanceScriptEngine implements ScriptEngine {
                     return new ScoreScript(p, lookup, context) {
 
                         @Override
-                        public double execute() {
+                        public double execute(ExplanationHolder explanation) {
                             String fieldValue = ((ScriptDocValues.Strings) getDoc().get(field)).getValue();
                             if (hash == null || fieldValue == null) {
                                 return (float) maxScore;

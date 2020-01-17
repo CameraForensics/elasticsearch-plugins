@@ -1,13 +1,12 @@
 package com.cameraforensics.elasticsearch.plugins;
 
+import java.util.Map;
+
 import org.apache.lucene.index.LeafReaderContext;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
+import org.elasticsearch.script.ScoreScript;
 import org.elasticsearch.script.ScriptContext;
 import org.elasticsearch.script.ScriptEngine;
-import org.elasticsearch.script.ScoreScript;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class HammingDistanceScriptEngine implements ScriptEngine {
     @Override
@@ -59,7 +58,7 @@ public class HammingDistanceScriptEngine implements ScriptEngine {
                         }
 
                         @Override
-                        public double execute() {
+                        public double execute(ExplanationHolder explanation) {
                             String fieldValue = ((ScriptDocValues.Strings) getDoc().get(field)).getValue();
                             if (hash == null || fieldValue == null || fieldValue.length() != hash.length()) {
                                 return 0.0f;

@@ -11,7 +11,7 @@ public class UrlTokenizerFactory extends AbstractTokenizerFactory {
 
     @Inject
     public UrlTokenizerFactory(IndexSettings indexSettings, Environment env, String name, Settings settings){
-        super(indexSettings, settings);
+        super(indexSettings, settings, name);
     }
 
     @Override
