@@ -1,6 +1,8 @@
 package com.cameraforensics.elasticsearch.plugins;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.lucene.index.LeafReaderContext;
@@ -15,6 +17,13 @@ public class EuclideanDistanceScriptEngine implements ScriptEngine {
         return "expert_scripts";
     }
 
+	@Override
+	public Set<ScriptContext<?>> getSupportedContexts() {
+		Set<ScriptContext<?>> set = new HashSet<>();
+		set.add(ScoreScript.CONTEXT);
+		return set;
+	}
+    
     @Override
     public <T> T compile(String scriptName, String scriptSource, ScriptContext<T> context, Map<String, String> params) {
         if (context.equals(ScoreScript.CONTEXT) == false) {
